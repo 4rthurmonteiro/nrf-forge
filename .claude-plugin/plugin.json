@@ -1,0 +1,18 @@
+{
+  "name": "nrf-forge",
+  "version": "0.1.0",
+  "description": "Develop nRF Connect SDK v3.3.0 firmware for the nRF54LM20B entirely through prompts: a wingspan-style workflow (brainstorm, plan, build, review) plus deep Zephyr/NCS technical skills, so the user never has to write C or touch a pointer.",
+  "author": {
+    "name": "Arthur Monteiro Alves Melo"
+  },
+  "keywords": [
+    "nrf-connect-sdk",
+    "zephyr",
+    "nrf54lm20b",
+    "firmware",
+    "embedded",
+    "ble",
+    "edge-ai"
+  ],
+  "license": "MIT"
+}
