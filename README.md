@@ -11,7 +11,7 @@ Inspired by [VGV Wingspan](https://github.com/VeryGoodOpenSource/vgv-wingspan), 
 One-line install from your terminal:
 
 ```bash
-claude plugin marketplace add <owner>/nrf-forge && claude plugin install nrf-forge
+claude plugin marketplace add 4rthurmonteiro/nrf-forge && claude plugin install nrf-forge
 ```
 
 Or inside an active Claude Code session, run these as **two separate commands** (the second only after the first completes):
@@ -19,7 +19,7 @@ Or inside an active Claude Code session, run these as **two separate commands** 
 1. Add the marketplace:
 
    ```text
-   /plugin marketplace add <owner>/nrf-forge
+   /plugin marketplace add 4rthurmonteiro/nrf-forge
    ```
 
 2. Install the plugin:
