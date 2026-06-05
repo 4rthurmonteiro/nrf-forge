@@ -1,0 +1,19 @@
+{
+  "name": "nrf-forge-marketplace",
+  "owner": {
+    "name": "Arthur Monteiro Alves Melo",
+    "email": "monteiroamelo@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "nrf-forge",
+      "source": "./",
+      "description": "Develop nRF Connect SDK v3.3.0 firmware for the nRF54LM20B entirely through prompts: wingspan-style workflow (brainstorm, plan, build, review) plus deep Zephyr/NCS technical skills.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Arthur Monteiro Alves Melo"
+      },
+      "keywords": ["nrf-connect-sdk", "zephyr", "nrf54lm20b", "firmware", "embedded", "ble", "edge-ai"]
+    }
+  ]
+}
