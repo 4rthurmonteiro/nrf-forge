@@ -1,57 +1,124 @@
-# nrf-forge
+# nRF Forge
 
-Desenvolva firmware para o **nRF54LM20B** com **nRF Connect SDK v3.3.0 + Zephyr** inteiramente via prompts — sem escrever C, sem tocar em ponteiro. Inspirado no [vgv-wingspan](https://github.com/VeryGoodOpenSource/vgv-wingspan), adaptado para embarcados.
+🔨 AI-assisted firmware development for the Nordic nRF54LM20B — describe behavior in plain language, ship production-quality Zephyr firmware without writing C by hand.
 
-## Filosofia
+![nRF Forge logo](./assets/logo.svg)
 
-1. **Você descreve o comportamento, o Claude escreve o C.** Toda decisão é explicada em termos de produto (bateria, alcance, latência) — nunca em jargão de memória.
-2. **Workflow com artefatos**: brainstorm → plano → build → review, cada fase salva um documento em `docs/` para a próxima fase continuar com contexto limpo.
-3. **Quality gate obrigatório**: todo código C passa por dois agentes de revisão (segurança de memória + padrões Zephyr) antes de ser considerado pronto. O agente de memória é o seu seguro contra ponteiros.
-4. **Hardware atrás de devicetree**: tudo configurado por overlay/Kconfig, nunca editando o SDK — o que torna barato o porte futuro do DK para a placa custom.
+Inspired by [VGV Wingspan](https://github.com/VeryGoodOpenSource/vgv-wingspan), adapted for embedded development with the nRF Connect SDK.
 
-## Workflow (4 fases)
+## Installation
 
-| Skill | O que faz |
-|---|---|
-| `fw-brainstorm` | Explora requisitos de uma feature em diálogo → `docs/brainstorm/` |
-| `fw-plan` | Transforma em plano passo-a-passo com Kconfig/devicetree/módulos → `docs/plan/` |
-| `fw-build` | Implementa o plano: código + `west build` a cada passo + agentes de revisão |
-| `fw-review` | Revisão de qualidade sob demanda (memória + Zephyr) → `docs/reviews/` |
+One-line install from your terminal:
 
-## Skills técnicas
+```bash
+claude plugin marketplace add <owner>/nrf-forge && claude plugin install nrf-forge
+```
 
-| Skill | O que faz |
-|---|---|
-| `nrf-new-project` | Scaffold de app NCS 3.3.0 com sysbuild e primeiro build limpo |
-| `nrf-build-flash` | Build, flash, logs RTT e troubleshooting de erros |
-| `nrf-devicetree` | Sensores e periféricos (I2C, SPI, ADC, PDM, GPIO) via overlay |
-| `nrf-ble` | BLE periférico (app de config) + central (rede fog), GATT, segurança |
-| `nrf-dfu` | DFU/OTA seguro: MCUboot, assinatura ED25519, chaves no KMU |
-| `nrf-power` | Orçamento de energia, duty cycle, suspensão de periféricos, PPK2 |
-| `nrf-custom-board` | Board definition própria e sequência de bring-up da placa final |
-| `nrf-edge-ai` | ML on-device: NPU Axon, FLPR, TFLite Micro, pipeline de dados |
+Or inside an active Claude Code session, run these as **two separate commands** (the second only after the first completes):
 
-## Agentes
+1. Add the marketplace:
 
-- `memory-safety-review-agent` — caça buffer overflow, NULL, use-after-free, stack overflow, violações de ISR
-- `zephyr-review-agent` — devicetree/Kconfig corretos, threading, logging, consumo
-- `ncs-research-agent` — pesquisa docs oficiais Nordic/Zephyr na versão exata do SDK
+   ```text
+   /plugin marketplace add <owner>/nrf-forge
+   ```
 
-## Alvo fixado
+2. Install the plugin:
 
-- SoC: nRF54LM20B (Cortex-M33 @128 MHz + FLPR RISC-V + NPU Axon, 2 MB RRAM, 512 KB RAM, BLE 6.0)
-- Board target: `nrf54lm20dk/nrf54lm20b/cpuapp` (DK agora; placa custom depois)
-- SDK: nRF Connect SDK v3.3.0, build sempre com sysbuild
-- Produto: dispositivo de parede a bateria (USB-C para carga) medindo pressão sonora, IAQ e iluminância; Edge AI extensiva; BLE com rede fog + app de configuração; gateway NB-IoT para a cloud
+   ```text
+   /plugin install nrf-forge
+   ```
 
-## Como começar
+## Requirements
 
-Com o plugin instalado e o ambiente NCS pronto, diga por exemplo:
+- nRF Connect SDK **v3.3.0** with the toolchain installed (`nrfutil sdk-manager install v3.3.0` or the nRF Connect for VS Code extension)
+- An **nRF54LM20 DK** (board target `nrf54lm20dk/nrf54lm20b/cpuapp`) — custom boards are supported via the `nrf-custom-board` skill
+- J-Link ≥ v9.24a for flashing
 
-> "cria o projeto do firmware" → `nrf-new-project`
-> "quero fazer o brainstorm da medição de IAQ" → `fw-brainstorm`
+## Getting Started
 
-## Extensões futuras
+nRF Forge follows a four-phase workflow: **brainstorm**, **plan**, **build**, and **review**. Each phase produces artifacts in `docs/` that feed into the next, so you can clear context between steps without losing work. Invoke skills explicitly or just describe what you need in natural language — the right skill triggers automatically.
 
-- `.mcp.json` com context7 (docs ao vivo) e Edge Impulse MCP (treino de modelos via prompt)
-- Skill de NB-IoT quando o módulo/modem do gateway for definido
+### 0. `/nrf-new-project`
+
+Starting from zero? Scaffold a sysbuild-ready NCS v3.3.0 application with a first clean build:
+
+```text
+/nrf-new-project air-quality-node
+```
+
+### 1. `/fw-brainstorm`
+
+Describe the feature or problem — the more open-ended, the more value this adds:
+
+```text
+/fw-brainstorm the device should detect abnormal noise patterns and notify over BLE
+```
+
+A collaborative dialogue explores requirements, power budget, connectivity, and failure modes — in product terms, never in C jargon. Output saved to `docs/brainstorm/`.
+
+### 2. `/fw-plan`
+
+Turn the brainstorm into an actionable, step-by-step implementation plan — Kconfig, devicetree, modules, and verification criteria for every step:
+
+```text
+/fw-plan docs/brainstorm/2026-06-05-noise-detection.md
+```
+
+### 3. `/fw-build`
+
+Execute the plan — write the C code, build with `west` after every step, flash, and run the quality gate:
+
+```text
+/fw-build docs/plan/2026-06-05-noise-detection.md
+```
+
+### 4. `/fw-review`
+
+Automated review for memory safety and Zephyr/NCS best practices, on demand:
+
+```text
+/fw-review
+```
+
+## The Safety Net
+
+Every line of generated C passes through two review agents before being declared done:
+
+- **memory-safety-review-agent** — buffer overflows, NULL dereferences, use-after-free, stack overflows, ISR-safety violations. Strict: any critical finding fails the gate.
+- **zephyr-review-agent** — devicetree discipline, Kconfig hygiene, threading model, logging, and power awareness.
+
+A third agent, **ncs-research-agent**, keeps answers pinned to the official Nordic/Zephyr documentation for your exact SDK version instead of stale training data.
+
+## Skills Reference
+
+| Skill | Command | Description |
+|-------|---------|-------------|
+| **Brainstorm** | `/fw-brainstorm <feature or idea>` | Explore firmware requirements through collaborative dialogue |
+| **Plan** | `/fw-plan <doc or description>` | Transform a brainstorm into a structured implementation plan |
+| **Build** | `/fw-build <plan file path>` | Execute a plan — code, build, flash, quality gate |
+| **Review** | `/fw-review [path]` | Run memory-safety and Zephyr-practice review agents on demand |
+| **New Project** | `/nrf-new-project <name>` | Scaffold a sysbuild NCS v3.3.0 app with a first clean build |
+| **Build & Flash** | `/nrf-build-flash [action]` | west build/flash, RTT logs, and build-error troubleshooting |
+| **Devicetree** | `/nrf-devicetree <peripheral>` | Wire sensors and peripherals (I2C, SPI, ADC, PDM, GPIO) via overlays |
+| **BLE** | `/nrf-ble <feature>` | GATT services, advertising, central/peripheral and dual-role, security |
+| **DFU / OTA** | `/nrf-dfu [transport]` | Secure updates: MCUboot, ED25519 signing, KMU key provisioning |
+| **Power** | `/nrf-power <concern>` | Power budgeting, duty cycling, peripheral suspension, PPK2 measurement |
+| **Custom Board** | `/nrf-custom-board <task>` | Out-of-tree board definition and hardware bring-up sequence |
+| **Edge AI** | `/nrf-edge-ai <task>` | On-device ML: Axon NPU, FLPR coprocessor, TFLite Micro |
+
+## Design Principles
+
+- **You describe behavior, the AI owns the C.** Decisions are explained as product trade-offs (battery, range, latency) — never pointer mechanics.
+- **Always buildable.** The firmware compiles after every step; warnings are defects.
+- **Hardware behind devicetree.** All hardware access goes through overlays and Kconfig, never SDK edits — porting from the DK to your own PCB stays cheap.
+- **Measured, not guessed.** Power claims require PPK2 numbers; DFU isn't done until the failure paths pass.
+
+### Tips
+
+- **Clear context between phases.** Each phase ends by offering the next step — a fresh context window produces better results.
+- **You can skip phases.** Simple change? Go straight to `/fw-build` with a description. Know what you want? Start at `/fw-plan`.
+- **Pin your SDK version.** The skills assume NCS v3.3.0; if you upgrade, the research agent will resolve API differences against the new docs.
+
+## License
+
+MIT
