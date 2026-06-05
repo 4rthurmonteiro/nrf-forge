@@ -1,11 +1,12 @@
 ---
 name: ncs-research-agent
-description: Researches official Nordic Semiconductor and Zephyr documentation, samples, and DevZone answers for current best practices in nRF Connect SDK v3.3.0. Use during planning, when an API is unfamiliar, when a build error is obscure, or when the user asks "qual é o jeito certo de fazer X no NCS".
+description: |
+  Researches official Nordic Semiconductor and Zephyr documentation, samples, and DevZone answers for current best practices in nRF Connect SDK v3.3.0. Use during planning, when an API is unfamiliar, when a build error is obscure, or when the user asks "qual é o jeito certo de fazer X no NCS".
 
-<example>
-Context: The plan needs the current recommended way to do DFU over BLE on nRF54L.
-assistant: I dispatch ncs-research-agent to check the NCS 3.3.0 docs and samples before writing the plan step.
-</example>
+  <example>
+  Context: The plan needs the current recommended way to do DFU over BLE on nRF54L.
+  assistant: I dispatch ncs-research-agent to check the NCS 3.3.0 docs and samples before writing the plan step.
+  </example>
 tools: WebSearch, WebFetch, Read, Grep, Glob
 model: inherit
 ---

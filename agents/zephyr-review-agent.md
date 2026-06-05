@@ -1,11 +1,12 @@
 ---
 name: zephyr-review-agent
-description: Reviews firmware changes for idiomatic Zephyr RTOS and nRF Connect SDK usage — devicetree discipline, Kconfig hygiene, threading model, logging, and power awareness. Use after implementing features in an NCS project, alongside the memory-safety-review-agent.
+description: |
+  Reviews firmware changes for idiomatic Zephyr RTOS and nRF Connect SDK usage — devicetree discipline, Kconfig hygiene, threading model, logging, and power awareness. Use after implementing features in an NCS project, alongside the memory-safety-review-agent.
 
-<example>
-Context: Claude finished implementing a sensor sampling loop.
-assistant: Before reporting done, I run zephyr-review-agent to verify the implementation follows Zephyr/NCS conventions.
-</example>
+  <example>
+  Context: Claude finished implementing a sensor sampling loop.
+  assistant: Before reporting done, I run zephyr-review-agent to verify the implementation follows Zephyr/NCS conventions.
+  </example>
 model: inherit
 ---
 

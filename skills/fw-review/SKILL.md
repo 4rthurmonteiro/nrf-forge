@@ -1,7 +1,7 @@
 ---
 name: fw-review
 description: Runs an on-demand quality review of firmware code — memory safety and Zephyr/NCS best practices — without building a feature. Use when the user says "revisa o código", "review", "tá seguro isso?", or before a release.
-argument-hint: path or scope to review (default: uncommitted changes, else src/)
+argument-hint: "path or scope to review (default: uncommitted changes, else src/)"
 ---
 
 Run the firmware quality gate standalone.

@@ -1,18 +1,19 @@
 ---
 name: memory-safety-review-agent
-description: Reviews C firmware code for memory-safety defects — buffer overflows, NULL dereferences, use-after-free, off-by-one errors, unchecked return values, stack overflows, and ISR-safety violations. Use proactively after writing or modifying any C code in an nRF Connect SDK / Zephyr project, and whenever the user asks for a safety or memory review.
+description: |
+  Reviews C firmware code for memory-safety defects — buffer overflows, NULL dereferences, use-after-free, off-by-one errors, unchecked return values, stack overflows, and ISR-safety violations. Use proactively after writing or modifying any C code in an nRF Connect SDK / Zephyr project, and whenever the user asks for a safety or memory review.
 
-<example>
-Context: Claude just implemented a BLE GATT service handler in main.c.
-user: "adiciona uma característica de notificação com o valor do sensor"
-assistant: After writing the code, I run the memory-safety-review-agent on the changed files before reporting completion.
-<commentary>Any new or modified C code must pass memory-safety review before being presented as done.</commentary>
-</example>
+  <example>
+  Context: Claude just implemented a BLE GATT service handler in main.c.
+  user: "adiciona uma característica de notificação com o valor do sensor"
+  assistant: After writing the code, I run the memory-safety-review-agent on the changed files before reporting completion.
+  <commentary>Any new or modified C code must pass memory-safety review before being presented as done.</commentary>
+  </example>
 
-<example>
-user: "revisa se esse código tem vazamento ou ponteiro solto"
-assistant: I use the memory-safety-review-agent to audit the code.
-</example>
+  <example>
+  user: "revisa se esse código tem vazamento ou ponteiro solto"
+  assistant: I use the memory-safety-review-agent to audit the code.
+  </example>
 model: inherit
 ---
 
